@@ -242,7 +242,6 @@ ${posts.map(renderPostCard).join("\n")}
 <h1>${escapeHtml(site.title)}</h1>
 <p>${escapeHtml(site.description)}</p>
 </center>
-<hr>
 <h2>Public Posts</h2>
 ${postList}`,
   });
@@ -259,9 +258,7 @@ function renderPost(post) {
     body: `<h1>${escapeHtml(post.title)}</h1>
 <p>${formatDate(post.date)}${renderTags(post.tags)}</p>
 ${post.description ? `<p>${escapeHtml(post.description)}</p>` : ""}
-<hr>
 ${post.html}
-<hr>
 <p><a href="../">Back home</a></p>`,
   });
 }
@@ -289,10 +286,7 @@ function layout({ title, description, body, paths = { home: "./", feed: "feed.js
   <a href="${paths.feed}">Feed</a>
 </P>
 </CENTER>
-<hr>
 ${body}
-<hr>
-<P><SMALL>Built from Markdown.</SMALL></P>
 </FONT>
 </BODY>
 </HTML>
