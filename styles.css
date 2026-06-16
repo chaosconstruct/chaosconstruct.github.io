@@ -1,0 +1,137 @@
+body {
+  max-width: 720px;
+  margin: 40px auto;
+  padding: 0 16px;
+  background: #fff;
+  color: #000;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+a {
+  color: #000;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.brand {
+  color: #000;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  gap: 12px;
+}
+
+.eyebrow {
+  display: none;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+}
+
+h1 {
+  margin: 0 0 16px;
+  font-size: 2rem;
+}
+
+.intro {
+  margin-bottom: 40px;
+}
+
+.post-list {
+  margin: 0 0 40px;
+  padding: 0;
+  list-style: none;
+}
+
+.post-list li {
+  margin: 0 0 24px;
+}
+
+.post-card {
+  display: block;
+  color: inherit;
+}
+
+.post-card h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.post-meta {
+  margin: 0 0 4px;
+  font-size: 0.9rem;
+}
+
+.post-description {
+  margin: 0;
+}
+
+.empty-state {
+  margin: 40px 0;
+}
+
+.article-header {
+  margin-bottom: 40px;
+}
+
+.article-body h2 {
+  margin-top: 2em;
+  font-size: 1.35rem;
+}
+
+.article-body h3 {
+  margin-top: 1.5em;
+  font-size: 1.1rem;
+}
+
+.article-body p,
+.article-body ul,
+.article-body ol,
+.article-body blockquote,
+.article-body pre {
+  margin: 1.1em 0;
+}
+
+.article-body blockquote {
+  margin-left: 0;
+  padding-left: 16px;
+  border-left: 1px solid #000;
+}
+
+.article-body code {
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+.article-body pre {
+  overflow-x: auto;
+  padding: 12px;
+  border: 1px solid #000;
+}
+
+.site-footer {
+  margin-top: 64px;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+  .site-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
