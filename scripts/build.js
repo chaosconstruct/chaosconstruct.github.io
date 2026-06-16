@@ -1,4 +1,4 @@
-import { mkdir, readFile, readdir, rm, writeFile, copyFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -7,7 +7,6 @@ const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
 const postsDir = path.join(rootDir, "content", "posts");
 const publicDir = path.join(rootDir, "public");
-const stylesPath = path.join(rootDir, "src", "styles.css");
 
 const site = {
   title: "Atelier",
@@ -19,7 +18,6 @@ export async function buildSite() {
 
   await rm(publicDir, { recursive: true, force: true });
   await mkdir(path.join(publicDir, "posts"), { recursive: true });
-  await copyFile(stylesPath, path.join(publicDir, "styles.css"));
 
   await writeFile(path.join(publicDir, "index.html"), renderIndex(posts), "utf8");
 
@@ -232,17 +230,18 @@ function markdownToHtml(markdown) {
 
 function renderIndex(posts) {
   const postList = posts.length
-    ? `<ul class="post-list">${posts.map(renderPostCard).join("")}</ul>`
-    : `<div class="empty-state">No public posts yet.</div>`;
+    ? `<ul>
+${posts.map(renderPostCard).join("\n")}
+</ul>`
+    : `<p>No public posts yet.</p>`;
 
   return layout({
     title: site.title,
     description: site.description,
-    body: `<section class="intro">
-  <p class="eyebrow">Personal site</p>
-  <h1>${escapeHtml(site.title)}</h1>
-  <p>${escapeHtml(site.description)}</p>
-</section>
+    body: `<h1>${escapeHtml(site.title)}</h1>
+<p>${escapeHtml(site.description)}</p>
+<hr>
+<h2>Posts</h2>
 ${postList}`,
   });
 }
@@ -252,34 +251,28 @@ function renderPost(post) {
     title: `${post.title} | ${site.title}`,
     description: post.description,
     paths: {
-      stylesheet: "../styles.css",
       home: "../",
       feed: "../feed.json",
     },
-    body: `<article class="article">
-  <header class="article-header">
-    <p class="post-meta">${formatDate(post.date)}${renderTags(post.tags)}</p>
-    <h1>${escapeHtml(post.title)}</h1>
-    ${post.description ? `<p class="post-description">${escapeHtml(post.description)}</p>` : ""}
-  </header>
-  <div class="article-body">
+    body: `<h1>${escapeHtml(post.title)}</h1>
+<p>${formatDate(post.date)}${renderTags(post.tags)}</p>
+${post.description ? `<p>${escapeHtml(post.description)}</p>` : ""}
+<hr>
 ${post.html}
-  </div>
-</article>`,
+<hr>
+<p><a href="../">Back home</a></p>`,
   });
 }
 
 function renderPostCard(post) {
-  return `<li>
-  <a class="post-card" href="${post.url}">
-    <p class="post-meta">${formatDate(post.date)}${renderTags(post.tags)}</p>
-    <h2>${escapeHtml(post.title)}</h2>
-    ${post.description ? `<p class="post-description">${escapeHtml(post.description)}</p>` : ""}
-  </a>
+  return `<li><a href="${post.url}">${escapeHtml(post.title)}</a>
+  <br>
+  <small>${formatDate(post.date)}${renderTags(post.tags)}</small>
+  ${post.description ? `<br>${escapeHtml(post.description)}` : ""}
 </li>`;
 }
 
-function layout({ title, description, body, paths = { stylesheet: "styles.css", home: "./", feed: "feed.json" } }) {
+function layout({ title, description, body, paths = { home: "./", feed: "feed.json" } }) {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -287,24 +280,16 @@ function layout({ title, description, body, paths = { stylesheet: "styles.css", 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="${escapeAttribute(description)}">
   <title>${escapeHtml(title)}</title>
-  <link rel="stylesheet" href="${paths.stylesheet}">
 </head>
 <body>
-  <div class="site-shell">
-    <header class="site-header">
-      <a class="brand" href="${paths.home}">${escapeHtml(site.title)}</a>
-      <nav class="nav" aria-label="Primary">
-        <a href="${paths.home}">Home</a>
-        <a href="${paths.feed}">Feed</a>
-      </nav>
-    </header>
-    <main class="main">
+<p>
+  <a href="${paths.home}">Home</a> |
+  <a href="${paths.feed}">Feed</a>
+</p>
+<hr>
 ${body}
-    </main>
-    <footer class="site-footer">
-      <span>Built from Markdown.</span>
-    </footer>
-  </div>
+<hr>
+<p><small>Built from Markdown.</small></p>
 </body>
 </html>
 `;
