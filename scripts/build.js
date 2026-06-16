@@ -238,10 +238,12 @@ ${posts.map(renderPostCard).join("\n")}
   return layout({
     title: site.title,
     description: site.description,
-    body: `<h1>${escapeHtml(site.title)}</h1>
+    body: `<center>
+<h1>${escapeHtml(site.title)}</h1>
 <p>${escapeHtml(site.description)}</p>
+</center>
 <hr>
-<h2>Posts</h2>
+<h2>Public Posts</h2>
 ${postList}`,
   });
 }
@@ -273,25 +275,27 @@ function renderPostCard(post) {
 }
 
 function layout({ title, description, body, paths = { home: "./", feed: "feed.json" } }) {
-  return `<!doctype html>
-<html lang="en">
-<head>
+  return `<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="${escapeAttribute(description)}">
-  <title>${escapeHtml(title)}</title>
-</head>
-<body>
-<p>
+  <TITLE>${escapeHtml(title)}</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000EE" VLINK="#551A8B" ALINK="#FF0000">
+<FONT FACE="Times New Roman, Times, serif">
+<CENTER>
+<P>
   <a href="${paths.home}">Home</a> |
   <a href="${paths.feed}">Feed</a>
-</p>
+</P>
+</CENTER>
 <hr>
 ${body}
 <hr>
-<p><small>Built from Markdown.</small></p>
-</body>
-</html>
+<P><SMALL>Built from Markdown.</SMALL></P>
+</FONT>
+</BODY>
+</HTML>
 `;
 }
 
